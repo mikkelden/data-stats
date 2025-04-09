@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: i_control_runs
+    description: "Control run events from the app. One row per run."
+
+    columns:
+      - name: created_at
+        description: "Timestamp of when the control run occurred."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "created_at > '2022-01-01'"
+              severity: warn
+              # -- sanity check to catch bad timestamps
+
+      - name: trigger_type
+        description: "Event code for the trigger type."
+        tests:
+          - accepted_values:
+              values: [301, 302, 303, 307, 1403, 1404, 1421, 1902, 1906]
